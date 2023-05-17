@@ -43,8 +43,20 @@ export async function createShortenUrl(req, res) {
 }
 
 export async function visitLink(req, res) {
+  const shortUrl = req.params.shortUrl;
   try {
-    res.send("placeholder");
+    const { rows, rowCount } = await db.query(
+      `
+        UPDATE links
+          SET visits = visits+1
+            WHERE "shortUrl"=$1
+        RETURNING url;
+      `,
+      [shortUrl]
+    );
+    if (!rowCount) return res.sendStatus(404);
+
+    res.redirect(rows[0].url);
   } catch (error) {
     res.status(500).send(error.message);
   }

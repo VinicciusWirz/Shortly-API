@@ -8,6 +8,7 @@ import {
 } from "../controllers/urls.controller.js";
 import schemaValidation from "../middlewares/schemaValidation.middleware.js";
 import { urlSchema } from "../schemas/url.schema.js";
+import { deleteUrlMiddleware } from "../middlewares/deleteUrl.middleware.js";
 
 const urlsRouter = Router();
 
@@ -19,6 +20,6 @@ urlsRouter.post(
   schemaValidation(urlSchema),
   createShortenUrl
 );
-urlsRouter.delete("/urls/:id", authValidation, deleteShortenUrl);
+urlsRouter.delete("/urls/:id", authValidation, deleteUrlMiddleware, deleteShortenUrl);
 
 export default urlsRouter;

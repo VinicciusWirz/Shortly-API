@@ -63,8 +63,16 @@ export async function visitLink(req, res) {
 }
 
 export async function deleteShortenUrl(req, res) {
+  const userId = res.locals.user.id;
+  const id = req.params.id;
   try {
-    res.send("placeholder");
+    await db.query(
+      `
+      DELETE FROM links WHERE "userId"=$1 AND id=$2;
+      `,
+      [userId, id]
+    );
+    res.sendStatus(204);
   } catch (error) {
     res.status(500).send(error.message);
   }

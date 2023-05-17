@@ -1,3 +1,4 @@
+import { nanoid } from "nanoid";
 import { db } from "../database/database.connection.js";
 
 export async function shortenUrlInfo(req, res) {
@@ -9,8 +10,22 @@ export async function shortenUrlInfo(req, res) {
 }
 
 export async function createShortenUrl(req, res) {
+  const url = req.body.url;
+  const user = res.locals.user;
   try {
-    res.send("placeholder");
+    const shortUrl = nanoid(8);
+    const { rows } = await db.query(
+      `
+        INSERT INTO links
+          ("userId", url, "shortUrl")
+        VALUES
+          ($1, $2, $3)
+        RETURNING id;
+      `,
+      [user.id, url, shortUrl]
+    );
+    const body = { id: rows[0].id, shortUrl };
+    res.status(201).send(body);
   } catch (error) {
     res.status(500).send(error.message);
   }

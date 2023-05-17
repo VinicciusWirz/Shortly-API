@@ -1,5 +1,6 @@
 import { db } from "../database/database.connection.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export async function signup(req, res) {
   const { name, email, password } = req.body;
@@ -20,8 +21,22 @@ export async function signup(req, res) {
 }
 
 export async function signin(req, res) {
+  const { email, password: passwordInput } = req.body;
   try {
-    res.send("placeholder");
+    const { rows, rowCount } = await db.query(
+      `SELECT users.password, users.id FROM users WHERE email=$1;`,
+      [email]
+    );
+    if (!rowCount) return res.sendStatus(401);
+
+    const { password, id } = rows[0];
+    const passwordMatch = bcrypt.compareSync(passwordInput, password);
+    if (!passwordMatch) return res.sendStatus(401);
+
+    const secretKey = process.env.SECRET_KEY || "chave_super_secreta";
+    const token = jwt.sign({ email }, secretKey);
+
+    res.status(200).send({ token });
   } catch (error) {
     res.status(500).send(error.message);
   }

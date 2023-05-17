@@ -2,8 +2,19 @@ import { nanoid } from "nanoid";
 import { db } from "../database/database.connection.js";
 
 export async function shortenUrlInfo(req, res) {
+  const id = req.params.id;
   try {
-    res.send("placeholder");
+    const { rows, rowCount } = await db.query(
+      `
+        SELECT 
+          id, "shortUrl", url
+          FROM links
+            WHERE id=$1;
+      `,
+      [id]
+    );
+    if (!rowCount) return res.sendStatus(404);
+    res.status(200).send(rows[0]);
   } catch (error) {
     res.status(500).send(error.message);
   }

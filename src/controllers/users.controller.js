@@ -34,7 +34,21 @@ export async function userInfo(req, res) {
 
 export async function getRanks(req, res) {
   try {
-    res.send("placeholder");
+    const { rows } = await db.query(
+      `
+        SELECT 
+          users.id,
+          users.name,
+          COUNT (links.id) AS "linksCount",
+          COALESCE (SUM (links.visits) , 0 ) AS "visitCount"
+        FROM users
+        LEFT JOIN links ON links."userId" = users.id
+        GROUP BY users.id
+        ORDER BY "visitCount" DESC, "linksCount" DESC
+        LIMIT 10
+      ;`
+    );
+    res.send(rows);
   } catch (error) {
     res.status(500).send(error.message);
   }

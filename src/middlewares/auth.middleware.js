@@ -7,8 +7,7 @@ export default async function authValidation(req, res, next) {
   const token = authorization.replace("Bearer ", "");
 
   try {
-    const secretKey = process.env.SECRET_KEY || "chave_super_secreta";
-    const email = jwt.verify(token, secretKey).email;
+    const email = jwt.verify(token, process.env.SECRET_KEY).email;
     const { rows, rowCount } = await db.query(
       `
         SELECT * 

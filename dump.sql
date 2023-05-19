@@ -30,7 +30,7 @@ CREATE TABLE public.links (
     url text NOT NULL,
     "shortUrl" text NOT NULL,
     visits integer DEFAULT 0 NOT NULL,
-    "createdAt" date DEFAULT now() NOT NULL
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL
 );
 
 
@@ -63,7 +63,7 @@ CREATE TABLE public.users (
     name text NOT NULL,
     email text NOT NULL,
     password text NOT NULL,
-    "createdAt" date DEFAULT now() NOT NULL
+    "createdAt" timestamp without time zone DEFAULT now() NOT NULL
 );
 
 
@@ -105,28 +105,28 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 -- Data for Name: links; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.links VALUES (1, 5, 'https://google.com', 'Ko4tJyz4', 0, '2023-05-17');
-INSERT INTO public.links VALUES (3, 5, 'https://google.com', 'HDfcbgHm', 0, '2023-05-17');
-INSERT INTO public.links VALUES (4, 5, 'https://google.com', 'XH6Rcx3D', 0, '2023-05-17');
-INSERT INTO public.links VALUES (5, 5, 'https://google.com', 'IqWsvqxj', 0, '2023-05-17');
-INSERT INTO public.links VALUES (2, 5, 'https://google.com', 'Kol2Sqdg', 7, '2023-05-17');
-INSERT INTO public.links VALUES (6, 5, 'https://google.com', 'rWeHAxQ1', 1, '2023-05-17');
-INSERT INTO public.links VALUES (11, 10, 'https://youtube.com', 'NBxU8Sc8', 0, '2023-05-17');
-INSERT INTO public.links VALUES (10, 1, 'https://youtube.com', 'jG8WYPfj', 1, '2023-05-17');
-INSERT INTO public.links VALUES (16, 12, 'https://www.youtube.com/watch?v=wz_AiUkdJps', 'GYcDxmac', 2, '2023-05-18');
-INSERT INTO public.links VALUES (12, 12, 'https://www.youtube.com/watch?v=16gSeaqC56c', 'oMfTyInr', 7, '2023-05-18');
-INSERT INTO public.links VALUES (15, 12, 'https://www.youtube.com/watch?v=k7pr4VTk5cQ', 'h8OJl1U3', 4, '2023-05-18');
+INSERT INTO public.links VALUES (1, 5, 'https://google.com', 'Ko4tJyz4', 0, '2023-05-17 00:00:00');
+INSERT INTO public.links VALUES (3, 5, 'https://google.com', 'HDfcbgHm', 0, '2023-05-17 00:00:00');
+INSERT INTO public.links VALUES (4, 5, 'https://google.com', 'XH6Rcx3D', 0, '2023-05-17 00:00:00');
+INSERT INTO public.links VALUES (5, 5, 'https://google.com', 'IqWsvqxj', 0, '2023-05-17 00:00:00');
+INSERT INTO public.links VALUES (2, 5, 'https://google.com', 'Kol2Sqdg', 7, '2023-05-17 00:00:00');
+INSERT INTO public.links VALUES (6, 5, 'https://google.com', 'rWeHAxQ1', 1, '2023-05-17 00:00:00');
+INSERT INTO public.links VALUES (11, 10, 'https://youtube.com', 'NBxU8Sc8', 0, '2023-05-17 00:00:00');
+INSERT INTO public.links VALUES (10, 1, 'https://youtube.com', 'jG8WYPfj', 1, '2023-05-17 00:00:00');
+INSERT INTO public.links VALUES (16, 12, 'https://www.youtube.com/watch?v=wz_AiUkdJps', 'GYcDxmac', 2, '2023-05-18 00:00:00');
+INSERT INTO public.links VALUES (12, 12, 'https://www.youtube.com/watch?v=16gSeaqC56c', 'oMfTyInr', 7, '2023-05-18 00:00:00');
+INSERT INTO public.links VALUES (15, 12, 'https://www.youtube.com/watch?v=k7pr4VTk5cQ', 'h8OJl1U3', 4, '2023-05-18 00:00:00');
 
 
 --
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.users VALUES (1, 'Usuario 1', 'user@email.com', '$2b$10$Idf7vq0g1SZryxVPzPAkzuB2UKiQBE4A59Yn6/1A9Ej6y771ZADay', '2023-05-17');
-INSERT INTO public.users VALUES (5, 'Usuario 2', 'user2@email.com', '$2b$10$vBgc9nCskuOEaEbFJ7O1JuPwYWP6AfvgpRcTcYjX9O/BETKYIvVS.', '2023-05-17');
-INSERT INTO public.users VALUES (9, 'Usuario 3', 'user3@email.com', '$2b$10$pIwiTueHlespoIoCHJkzFuov2e9XXxuT.v.ZDtoyMnVlFck1byV/m', '2023-05-17');
-INSERT INTO public.users VALUES (10, 'Usuario 4', 'user4@email.com', '$2b$10$mP8HdapGccQ6EIzNWp7Xkenpz9rag.XolU2Hjs3PDk47n1qxOm.1a', '2023-05-17');
-INSERT INTO public.users VALUES (12, 'Jorel', 'irmaodoirmaodojorel@email.com', '$2b$10$82R2b.0rK/22/d1EjIY3fOZbwRpE/j9ULymCgIqcnd7ZdISz7CKcG', '2023-05-18');
+INSERT INTO public.users VALUES (1, 'Usuario 1', 'user@email.com', '$2b$10$Idf7vq0g1SZryxVPzPAkzuB2UKiQBE4A59Yn6/1A9Ej6y771ZADay', '2023-05-17 00:00:00');
+INSERT INTO public.users VALUES (5, 'Usuario 2', 'user2@email.com', '$2b$10$vBgc9nCskuOEaEbFJ7O1JuPwYWP6AfvgpRcTcYjX9O/BETKYIvVS.', '2023-05-17 00:00:00');
+INSERT INTO public.users VALUES (9, 'Usuario 3', 'user3@email.com', '$2b$10$pIwiTueHlespoIoCHJkzFuov2e9XXxuT.v.ZDtoyMnVlFck1byV/m', '2023-05-17 00:00:00');
+INSERT INTO public.users VALUES (10, 'Usuario 4', 'user4@email.com', '$2b$10$mP8HdapGccQ6EIzNWp7Xkenpz9rag.XolU2Hjs3PDk47n1qxOm.1a', '2023-05-17 00:00:00');
+INSERT INTO public.users VALUES (12, 'Jorel', 'irmaodoirmaodojorel@email.com', '$2b$10$82R2b.0rK/22/d1EjIY3fOZbwRpE/j9ULymCgIqcnd7ZdISz7CKcG', '2023-05-18 00:00:00');
 
 
 --

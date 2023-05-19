@@ -32,9 +32,8 @@ export async function signin(req, res) {
     const { password, id } = rows[0];
     const passwordMatch = bcrypt.compareSync(passwordInput, password);
     if (!passwordMatch) return res.sendStatus(401);
-
-    const secretKey = process.env.SECRET_KEY || "chave_super_secreta";
-    const token = jwt.sign({ email }, secretKey);
+    const key = process.env.SECRET_KEY || "super_secret_key";
+    const token = jwt.sign({ email }, key);
 
     res.status(200).send({ token });
   } catch (error) {

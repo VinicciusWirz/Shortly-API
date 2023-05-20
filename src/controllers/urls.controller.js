@@ -5,6 +5,7 @@ import {
   getUrlFromIdDB,
   updateVisitCountDB,
 } from "../repositories/urls.repository.js";
+import { getUserInfoDB } from "../repositories/users.repository.js";
 
 export async function shortenUrlInfo(req, res) {
   const id = req.params.id;
@@ -51,6 +52,16 @@ export async function deleteShortenUrl(req, res) {
     await deleteUrlDB(userId, id);
 
     res.sendStatus(204);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+}
+
+export async function getUserLinks(req, res) {
+  const userId = req.params.userId;
+  try {
+    const { rows } = await getUserInfoDB(userId);
+    res.send(rows[0]);
   } catch (error) {
     res.status(500).send(error.message);
   }

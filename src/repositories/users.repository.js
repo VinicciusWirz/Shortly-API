@@ -1,6 +1,6 @@
 import { db } from "../database/database.connection.js";
 
-export function getUserInfoDB(userId) {
+export async function getUserInfoDB(userId) {
   const query = `
     SELECT 
     users.id, 
@@ -21,12 +21,12 @@ export function getUserInfoDB(userId) {
     WHERE users.id=$1
     GROUP BY users.id, users.name;
   `;
-  const result = db.query(query, [userId]);
+  const result = await db.query(query, [userId]);
   return result;
 }
 
-export function getRanksDB() {
-  const result = db.query(
+export async function getRanksDB() {
+  const result = await db.query(
     `
       SELECT 
         users.id,

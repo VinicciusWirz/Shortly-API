@@ -1,7 +1,7 @@
 import { db } from "../database/database.connection.js";
 
-export function getUrlFromIdDB(id, mode) {
-  const result = db.query(
+export async function getUrlFromIdDB(id, mode) {
+  const result = await db.query(
     `
         SELECT 
         ${mode === "verification" ? '"userId"' : 'id, "shortUrl", url'} 
@@ -12,8 +12,8 @@ export function getUrlFromIdDB(id, mode) {
   return result;
 }
 
-export function deleteUrlDB(userId, id) {
-  const result = db.query(
+export async function deleteUrlDB(userId, id) {
+  const result = await db.query(
     `
         DELETE FROM links WHERE "userId"=$1 AND id=$2;
     `,
@@ -22,8 +22,8 @@ export function deleteUrlDB(userId, id) {
   return result;
 }
 
-export function updateVisitCountDB(shortUrl) {
-  const result = db.query(
+export async function updateVisitCountDB(shortUrl) {
+  const result = await db.query(
     `
         UPDATE links
         SET visits = visits+1
@@ -35,8 +35,8 @@ export function updateVisitCountDB(shortUrl) {
   return result;
 }
 
-export function createNewShortUrlDB(userId, url, shortUrl) {
-  const result = db.query(
+export async function createNewShortUrlDB(userId, url, shortUrl) {
+  const result = await db.query(
     `
           INSERT INTO links
             ("userId", url, "shortUrl")

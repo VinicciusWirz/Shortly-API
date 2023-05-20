@@ -1,12 +1,19 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { createUserDB, getUserDB } from "../repositories/auth.repository.js";
+import { db } from "../database/database.connection.js";
 
 export async function signup(req, res) {
   const { name, email, password } = req.body;
   try {
     const hashPassword = bcrypt.hashSync(password, 10);
-    await createUserDB(name, email, hashPassword);
+    // await createUserDB(name, email, hashPassword);
+    await db.query(
+      `
+            INSERT INTO users (name, email, password) VALUES ($1, $2, $3);
+          `,
+      [name, email, hashPassword]
+    );
 
     res.sendStatus(201);
   } catch (error) {
@@ -18,7 +25,11 @@ export async function signup(req, res) {
 export async function signin(req, res) {
   const { email, password: passwordInput } = req.body;
   try {
-    const { rows, rowCount } = await getUserDB(email);
+    // const { rows, rowCount } = await getUserDB(email);
+    const {rows, rowCount} = await db.query(
+      `SELECT * FROM users WHERE email=$1;`,
+      [email]
+    );
 
     if (!rowCount) return res.sendStatus(401);
 

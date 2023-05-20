@@ -1,15 +1,10 @@
-import { db } from "../database/database.connection.js";
+import { getUrlFromIdDB } from "../repositories/urls.repository.js";
 
 export async function deleteUrlMiddleware(req, res, next) {
   const userId = res.locals.user.id;
   const id = req.params.id;
   try {
-    const { rows, rowCount } = await db.query(
-      `
-            SELECT "userId" FROM links WHERE id=$1;
-        `,
-      [id]
-    );
+    const { rows, rowCount } = await getUrlFromIdDB(id, "verification");
     if (!rowCount) return res.sendStatus(404);
     if (rows[0].userId !== userId) return res.sendStatus(401);
 

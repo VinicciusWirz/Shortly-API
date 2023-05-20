@@ -1,18 +1,16 @@
 import { nanoid } from "nanoid";
-import { db } from "../database/database.connection.js";
+import {
+  createNewShortUrlDB,
+  deleteUrlDB,
+  getUrlFromIdDB,
+  updateVisitCountDB,
+} from "../repositories/urls.repository.js";
 
 export async function shortenUrlInfo(req, res) {
   const id = req.params.id;
   try {
-    const { rows, rowCount } = await db.query(
-      `
-        SELECT 
-          id, "shortUrl", url
-          FROM links
-            WHERE id=$1;
-      `,
-      [id]
-    );
+    const { rows, rowCount } = await getUrlFromIdDB(id, "render");
+
     if (!rowCount) return res.sendStatus(404);
     res.status(200).send(rows[0]);
   } catch (error) {
@@ -25,16 +23,8 @@ export async function createShortenUrl(req, res) {
   const user = res.locals.user;
   try {
     const shortUrl = nanoid(8);
-    const { rows } = await db.query(
-      `
-        INSERT INTO links
-          ("userId", url, "shortUrl")
-        VALUES
-          ($1, $2, $3)
-        RETURNING id;
-      `,
-      [user.id, url, shortUrl]
-    );
+    const { rows } = await createNewShortUrlDB(user.id, url, shortUrl);
+
     const body = { id: rows[0].id, shortUrl };
     res.status(201).send(body);
   } catch (error) {
@@ -45,18 +35,10 @@ export async function createShortenUrl(req, res) {
 export async function visitLink(req, res) {
   const shortUrl = req.params.shortUrl;
   try {
-    const { rows, rowCount } = await db.query(
-      `
-        UPDATE links
-          SET visits = visits+1
-            WHERE "shortUrl"=$1
-        RETURNING url;
-      `,
-      [shortUrl]
-    );
+    const { rows, rowCount } = await updateVisitCountDB(shortUrl);
     if (!rowCount) return res.sendStatus(404);
 
-    res.redirect(rows[0].url);
+    res.redirect(200, rows[0].url);
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -66,12 +48,8 @@ export async function deleteShortenUrl(req, res) {
   const userId = res.locals.user.id;
   const id = req.params.id;
   try {
-    await db.query(
-      `
-      DELETE FROM links WHERE "userId"=$1 AND id=$2;
-      `,
-      [userId, id]
-    );
+    await deleteUrlDB(userId, id);
+
     res.sendStatus(204);
   } catch (error) {
     res.status(500).send(error.message);

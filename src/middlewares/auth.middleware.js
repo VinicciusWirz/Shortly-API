@@ -1,5 +1,5 @@
-import { db } from "../database/database.connection.js";
 import jwt from "jsonwebtoken";
+import { getUserDB } from "../repositories/auth.repository.js";
 
 export default async function authValidation(req, res, next) {
   const { authorization } = req.headers;
@@ -9,14 +9,8 @@ export default async function authValidation(req, res, next) {
 
   try {
     const email = jwt.verify(token, key).email;
-    const { rows, rowCount } = await db.query(
-      `
-        SELECT * 
-            FROM users 
-            WHERE email=$1;
-    `,
-      [email]
-    );
+    const { rows, rowCount } = await getUserDB(email);
+
     if (!rowCount) return res.sendStatus(401);
     res.locals.user = rows[0];
     next();

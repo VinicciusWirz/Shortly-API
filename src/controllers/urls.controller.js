@@ -38,7 +38,7 @@ export async function visitLink(req, res) {
     const { rows, rowCount } = await updateVisitCountDB(shortUrl);
     if (!rowCount) return res.sendStatus(404);
 
-    res.redirect(200, rows[0].url);
+    res.redirect(rows[0].url);
   } catch (error) {
     res.status(500).send(error.message);
   }

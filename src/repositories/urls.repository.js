@@ -1,11 +1,19 @@
 import { db } from "../database/database.connection.js";
 
-export function getUrlFromIdDB(id, mode) {
+export function getUrlFromIdDB(id) {
   const result = db.query(
     `
-      SELECT 
-        ${mode === "verification" ? '"userId"' : 'id, "shortUrl", url'} 
-      FROM links WHERE id=$1;
+      SELECT id, "shortUrl", url FROM links WHERE id=$1;
+    `,
+    [id]
+  );
+  return result;
+}
+
+export function getUserIdFromUrlDB(id) {
+  const result = db.query(
+    `
+      SELECT "userId" FROM links WHERE id=$1;
     `,
     [id]
   );

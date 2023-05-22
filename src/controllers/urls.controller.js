@@ -10,7 +10,7 @@ import { getUserInfoDB } from "../repositories/users.repository.js";
 export async function shortenUrlInfo(req, res) {
   const id = req.params.id;
   try {
-    const { rows, rowCount } = await getUrlFromIdDB(id, "render");
+    const { rows, rowCount } = await getUrlFromIdDB(id);
 
     if (!rowCount) return res.sendStatus(404);
     res.status(200).send(rows[0]);
